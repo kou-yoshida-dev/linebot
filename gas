@@ -1,0 +1,569 @@
+
+var CHANNEL_ACCESS_TOKEN = ; // Channel_access_tokenを登録
+
+var line_endpoint = 'https://api.line.me/v2/bot/message/reply';
+
+
+var sheet = SpreadsheetApp.getActiveSpreadsheet();
+
+
+
+ 
+        function doPost(e) {
+          
+         //var send='aaa';
+          
+       
+          
+          // JSONをパース
+          var json = JSON.parse(e.postData.contents);
+          
+          var user_id = json.events[0].source.userId;
+          
+          if(sheet.getSheetByName(user_id)){
+            
+          }else{
+            sheet.insertSheet(user_id);
+          }
+          
+          
+          //カテゴリーを追加
+          var user = sheet.getSheetByName(user_id);
+          
+          user.getRange('A1').setValue('調味料');
+          user.getRange('A2').setValue(' ');
+          user.getRange('A3').setValue(' ');
+          user.getRange('B1').setValue('レトルト食品');
+          user.getRange('B2').setValue(' ');
+          user.getRange('B3').setValue(' ');
+          user.getRange('C1').setValue('日用品');
+          user.getRange('C2').setValue(' ');
+          user.getRange('C3').setValue(' ');
+          user.getRange('D1').setValue('生鮮食品');
+          user.getRange('D2').setValue(' ');
+          user.getRange('D3').setValue(' ');
+          user.getRange('E1').setValue('その他食料品');
+          user.getRange('E2').setValue(' ');
+          user.getRange('E3').setValue(' ');
+          user.getRange('F1').setValue('その他');
+          user.getRange('F2').setValue(' ');
+          user.getRange('F3').setValue(' ');
+         
+         
+     
+     
+          
+          
+
+         
+          
+         
+          // 送信されてきたメッセージを取得
+          var user_message = json.events[0].message.text; 
+          
+          
+          if(user_message == '全削除'){
+            sheet.deleteSheet(sheet.getSheetByName(user_id));
+          }
+         
+           
+          
+         
+          // 返信するためのトークンを取得
+          var reply_token= json.events[0].replyToken;
+          if (typeof reply_token === 'undefined') {
+            return;
+          }
+         
+          // 返信するメッセージを配列で用意する
+          var reply_messages;
+          
+         
+          if ('調味料' == user_message) {
+            
+       
+            
+            
+            
+            
+            
+            var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var tyoumiryoulength = user.getRange(1,1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var tyoumiryoulist='';
+             for(var i =2;i<=tyoumiryoulength;i++){
+            
+               if(i==2 || i==3){
+                 tyoumiryoulist+='';
+               }else if(i%2==0){
+                 tyoumiryoulist+='・'+user.getRange(i,1).getValue()+'...';
+               }else{
+                 
+                 tyoumiryoulist+=user.getRange(i,1).getValue()+'\n';
+               }
+                
+            }
+            
+            if(tyoumiryoulength==3){
+              tyoumiryoulist='未登録'+'\n';
+            }
+            
+           user.getRange(tyoumiryoulength+1,1).setValue('next');
+            
+          
+           
+            reply_messages = ['ストックの調味料は'+'\n'+'\n'+tyoumiryoulist+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録・編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+            
+            
+            
+         
+          } else if ('レトルト食品' == user_message) {
+            var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var retorutolength = user.getRange(1,2).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var reotrutolist='';
+             for(var i =2;i<=retorutolength;i++){
+            
+               
+               if(i==2 || i==3){
+                 reotrutolist+='';
+               }else if(i%2==0){
+                 reotrutolist+='・'+user.getRange(i,2).getValue()+'...';
+               }else{
+                 
+                 reotrutolist+=user.getRange(i,2).getValue()+'\n';
+               }
+                
+            }
+            
+            if( retorutolength==3){
+              reotrutolist+='未登録'+'\n';
+            }
+            
+           user.getRange(retorutolength+1,2).setValue('next');
+            
+          
+           
+            reply_messages = ['ストックのレトルト食品は'+'\n'+'\n'+reotrutolist+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録・編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+            
+            
+          
+         
+          }else if ('日用品' == user_message) {
+            var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var length = user.getRange(1,3).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var list='';
+             for(var i =2;i<=length;i++){
+            
+               
+               if(i==2 || i==3){
+                 list+='';
+               }else if(i%2==0){
+                 list+='・'+user.getRange(i,3).getValue()+'...';
+               }else{
+                 
+                 list+=user.getRange(i,3).getValue()+'\n';
+               }
+                
+            }
+            
+            
+            if( length==3){
+              list+='未登録'+'\n';
+            }
+            
+           user.getRange(length+1,3).setValue('next');
+            
+          
+           
+            reply_messages = ['ストックの日用品は'+'\n'+'\n'+list+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録・編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+            
+            
+         
+          }else if ('生鮮食品' == user_message) {
+            
+            
+            
+           var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var length = user.getRange(1,4).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var list='';
+             for(var i =2;i<=length;i++){
+            
+               
+               if(i==2 || i==3){
+                 list+='';
+               }else if(i%2==0){
+                 list+='・'+user.getRange(i,4).getValue()+'...';
+               }else{
+                 
+                 list+=user.getRange(i,4).getValue()+'\n';
+               }
+                
+            }
+            
+            if( length==3){
+              list+='未登録'+'\n';
+            }
+            
+           user.getRange(length+1,4).setValue('next');
+            
+          
+           
+            reply_messages = ['ストックの生鮮食品は'+'\n'+'\n'+list+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録・編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+            
+          }else if ('その他食品類' == user_message) {
+             var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var length = user.getRange(1,5).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var list='';
+             for(var i =2;i<=length;i++){
+            
+               
+               if(i==2 || i==3){
+                 list+='';
+               }else if(i%2==0){
+                 list+='・'+user.getRange(i,5).getValue()+'...';
+               }else{
+                 
+                 list+=user.getRange(i,5).getValue()+'\n';
+               }
+                
+            }
+            
+            if( length==3){
+              list+='未登録'+'\n';
+            }
+            
+           user.getRange(length+1,5).setValue('next');
+            
+          
+           
+            reply_messages = ['ストックのその他食品は'+'\n'+'\n'+list+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+         
+          }else if ('その他' == user_message) {
+              var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+              
+              for(var i =1;i<=tate;i++){
+              for(var t=1;t<=yoko;t++){
+                if(user.getRange(i,t).getValue()=='next'){
+                    user.getRange(i,t).clear();
+                  
+                }
+              }
+            }
+            
+           
+            
+            //var cc =user.getActiveCell().getValues();
+            
+            var length = user.getRange(1,6).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+            var list='';
+             for(var i =2;i<=length;i++){
+            
+               
+               if(i==2 || i==3){
+                 list+='';
+               }else if(i%2==0){
+                 list+='・'+user.getRange(i,6).getValue()+'...';
+               }else{
+                 
+                 list+=user.getRange(i,6).getValue()+'\n';
+               }
+                
+            }
+            
+           user.getRange(length+1,6).setValue('next');
+            
+            if( length==3){
+              list+='未登録'+'\n';
+            }
+            
+          
+           
+            reply_messages = ['ストックのその他は'+'\n'+'\n'+list+'\n'+'です。'+'\n'+'-------------------------------'+'\n'+'\n'+'登録・編集する[商品名]を入力してください。'+'\n'+'\n'+'例)'+'\n'+'胡椒→送信'+'\n'+'\n'];
+            
+            
+          }else{
+            
+           var yoko=user.getLastColumn();
+            var tate = user.getLastRow();
+            
+            
+            var o=0;
+            var y =0;
+            for(var i =0;i<=tate;i++){
+              for(var t=0;t<=yoko;t++){
+                
+                if(user.getRange(i+1,t+1).getValue()=='品数未定'){
+                  y=1;
+                }
+                
+                if(user.getRange(i+1,t+1).getValue()=='next' || user.getRange(i+1,t+1).getValue()=='品数未定'){
+                  o=1;
+                }
+
+            
+              }
+            }
+            
+            if(o==0 && user_message!=='調味料' && user_message!=='日用品' && user_message!=='その他食品類' && user_message!=='生鮮食品' && user_message!=='その他' && user_message!=='レトルト食品'){
+              
+              
+              reply_messages = ['エラー　ジャンルを洗濯してください'];
+              
+              
+            }else if(y===1 && isNaN(user_message)){
+              reply_messages = ['エラー 数値を入れてください'];
+            }else{
+              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            if(isNaN(user_message)){
+            
+              
+         
+              for(var i =0;i<=tate;i++){
+              for(var t=0;t<=yoko;t++){
+                if(user.getRange(i+1,t+1).getValue()==user_message){
+                  
+                  
+                  
+                  
+                
+                 
+                   user.getRange(i+2,t+1).setValue('品数未定');
+                   reply_messages = ['品数を入力してください（半角数字）'];
+                  
+           
+                    var length = user.getRange(1,t+1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+                  
+                  user.getRange(length,t+1).clear();
+                  
+                  
+                 
+                  
+                  
+               
+                  
+                }else if(user.getRange(i+1,t+1).getValue()=='next'){
+                  
+                    user.getRange(i+1,t+1).setValue(user_message);
+                  user.getRange(i+2,t+1).setValue('品数未定');
+                  reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'];
+                  
+                  
+                }else{
+                  
+                    reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'];
+                  
+                  
+               
+                }
+                }
+                
+               
+                
+              }
+              
+             
+            }else{
+              
+              
+              
+              
+              
+              
+              
+              
+              var u=1;
+              
+              for(var i =0;i<=tate;i++){
+              for(var t=0;t<=yoko;t++){
+                if(user.getRange(i+1,t+1).getValue()=='品数未定'){
+                  
+                  if(user_message==99){
+                    user.getRange(i+1,t+1).clear();
+                    user.getRange(i,t+1).clear();
+                    
+                    reply_messages = ['削除が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'「全削除」と打つと全てのデータを削除できます。'];
+                    u=0;
+                  break;
+                  }else{
+                  
+                  
+                    user.getRange(i+1,t+1).setValue(user_message);
+                  reply_messages = ['登録が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'「全削除」と打つと全てのデータを削除できます。'];
+                  u=0;
+                  break;
+                  }
+                  
+                }else{
+                  if(user.getRange(i+1,t+1).getValue()=='next'){
+                    reply_messages = ['商品名を入れてください'];
+                    u=0;
+                  break;
+                  }else{
+                    reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'];
+                  }
+                  
+                }
+              }
+                if(u==0){
+                  break;
+                }
+            }
+            
+            
+            
+            
+            }
+              
+              
+              
+              
+            }
+
+            
+            
+            
+            
+            
+             
+              
+           
+              
+              // アイデアやメモが入力されたときの処理
+            
+              
+            
+         
+            
+            
+            
+            
+            
+            
+            
+          }
+         
+          
+          
+          
+          
+          // メッセージを返信
+          var messages = reply_messages.map(function (v) {
+            return {'type': 'text', 'text': v};   
+          });	
+          
+          
+          
+          
+          UrlFetchApp.fetch(line_endpoint, {
+            'headers': {
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+            },
+            'method': 'post',
+            'payload': JSON.stringify({
+              'replyToken': reply_token,
+              'messages': messages,
+            }),
+          });
+          return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);
+          
+        }

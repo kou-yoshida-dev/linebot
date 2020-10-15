@@ -1,6 +1,7 @@
 
 var CHANNEL_ACCESS_TOKEN = ; // Channel_access_tokenを登録
 
+
 var line_endpoint = 'https://api.line.me/v2/bot/message/reply';
 
 
@@ -444,12 +445,12 @@ var sheet = SpreadsheetApp.getActiveSpreadsheet();
                   
                     user.getRange(i+1,t+1).setValue(user_message);
                   user.getRange(i+2,t+1).setValue('品数未定');
-                  reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'];
+                  reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'+'\n'+'\n'+'ストック数「00」->アイテム削除'];
                   
                   
                 }else{
                   
-                    reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'];
+                    reply_messages = ['現在の[ストック品数]を入力してください（半角数字）'+'\n'+'\n'+'ストック数「00」->アイテム削除'];
                   
                   
                
@@ -476,18 +477,18 @@ var sheet = SpreadsheetApp.getActiveSpreadsheet();
               for(var t=0;t<=yoko;t++){
                 if(user.getRange(i+1,t+1).getValue()=='品数未定'){
                   
-                  if(user_message==99){
+                  if(user_message==00){
                     user.getRange(i+1,t+1).clear();
                     user.getRange(i,t+1).clear();
                     
-                    reply_messages = ['削除が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'「全削除」と打つと全てのデータを削除できます。'];
+                    reply_messages = ['削除が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'\n'+'「全削除」->全データ削除'];
                     u=0;
                   break;
                   }else{
                   
                   
                     user.getRange(i+1,t+1).setValue(user_message);
-                  reply_messages = ['登録が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'「全削除」と打つと全てのデータを削除できます。'];
+                  reply_messages = ['登録が完了しました！'+'\n'+'\n'+'-------------------------------'+'\n'+'\n'+'ストック数「00」->アイテム削除'+'\n'];
                   u=0;
                   break;
                   }
@@ -567,3 +568,4 @@ var sheet = SpreadsheetApp.getActiveSpreadsheet();
           return ContentService.createTextOutput(JSON.stringify({'content': 'post ok'})).setMimeType(ContentService.MimeType.JSON);
           
         }
+        
